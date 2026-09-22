@@ -2,26 +2,56 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+
 
 /**
  * Classe principale gérant les opérations sur la base de données pour les articles du magasin.
  */
 public class ShopArticle {
 	public static ResultSet request(Connection conn, String sql){
+		try {return conn.prepareStatement(sql).executeQuery();
+			
+		}catch (SQLException e) {
+            System.err.println(e);
+			return null;
+        }
 		
 	}
     
-    public static void requestDao(Connection conn, String sql){
+    public static ArrayList<Article> requestDao(Connection conn, String sql){
+		ResultSet result = request(conn, sql);
+		if((result != null)) {
+			try {
+				ArrayList<Article> articles = new ArrayList<Article>();
+				while(result.next())articles.add(new Article(result.getString(1), 
+				result.getString(2), 
+				result.getDouble(3)));
+				return articles;
+			}catch (SQLException e) {
+				System.err.println(e);
+				return new ArrayList<Article>();
+			}
+		}
+		return new ArrayList<Article>();
 
 	}
 
     public static void requestNoDao(Connection conn, String sql){
-
+		ResultSet result = request(conn, sql);
+		if((result != null)) {
+			try {
+				while(result.next())System.out.println(result.getString(1));
+			}catch (SQLException e) {
+				System.err.println(e);
+			}
+		}
+		
+		
 	}
 	 /**
      * Exécute une requête SQL préparée avec trois paramètres (description, marque, prix unitaire).
@@ -101,14 +131,22 @@ public class ShopArticle {
 	 * d'abord une insertion puis un update
 	 * @param conn la connexion à la base de donnée
 	 */
-	private static void testRequest(Connection conn){
+	public static void testRequest(Connection conn){
 		fileRequest(conn);
         request(conn, "INSERT INTO T_Articles ( Description, Brand, UnitaryPrice ) VALUES ( ? ,? ,?)",
         "disque dur externe 890 To", "SATA", 34.0);
+		requestNoDao(conn, 
+			"SELECT concat('l''article ', Description,' a comme marque ', Brand,' et coûte ', UnitaryPrice ,' euros.') FROM T_articles");
+	
 		request(conn, "UPDATE T_Articles SET UnitaryPrice = ? WHERE Description = ? AND Brand = ? AND UnitaryPrice = ?",
 		30.0, "disque dur externe 890 To", "SATA", 34.0);
+		requestNoDao(conn, 
+			"SELECT concat('l''article ', Description,' a comme marque ', Brand,' et coûte ', UnitaryPrice ,' euros.') FROM T_articles");
+	
 		request(conn, "DELETE FROM T_articles WHERE Description = ? AND Brand = ? AND UnitaryPrice = ?", 
 		"disque dur externe 890 To", "SATA", 30.0);
+		requestNoDao(conn, 
+			"SELECT concat('l''article ', Description,' a comme marque ', Brand,' et coûte ', UnitaryPrice ,' euros.') FROM T_articles");
 	}
 
     /**
@@ -118,13 +156,5 @@ public class ShopArticle {
      * @param args les arguments transmis en ligne de commande (non utilisés)
      * @throws Exception en cas d'erreur de chargement de classe ou d'exécution
      */
-    public static void main(String[] args) throws Exception {
-        try (Connection conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/Shop?allowMultiQueries=true",
-                "root", "")) {
-            System.out.println("Connexion réussie !");
-            testRequest(conn);
-        } catch (SQLException e) {
-            System.err.println(e);
-        }
-    }
+
 }
