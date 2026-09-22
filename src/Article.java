@@ -11,5 +11,9 @@ public class Article {
     public String toString(){
         return "l'article " + description + " a comme marque " + brand + " et coûte " + price + " euros.";
     }
+
+    public Double toDouble(){
+        return price;
+    }
     
 }
