@@ -12,8 +12,21 @@ import java.sql.Statement;
  * Classe principale gérant les opérations sur la base de données pour les articles du magasin.
  */
 public class ShopArticle {
+	
 
-
+    /**
+     * Exécute les instructions SQL contenues dans le fichier de script.
+     *
+     * @param conn la connexion active à la base de données
+     */
+    public static void fileRequest(Connection conn) {
+        try (Statement stmt = conn.createStatement()) {
+            String sql = file();
+            stmt.execute(sql);
+        } catch (SQLException e) {
+            System.err.println(e);
+        }
+    }
 	/**
 	 * la liste de tout les tests de requêtes sql;
 	 * d'abord une insertion puis un update
