@@ -13,6 +13,14 @@ import java.util.ArrayList;
  * Classe principale gérant les opérations sur la base de données pour les articles du magasin.
  */
 public class ShopArticle {
+
+	/**
+     * Exécute une requête SQL de sélection et retourne le jeu de résultats.
+     *
+     * @param conn la connexion active à la base de données
+     * @param sql  la requête SQL à exécuter
+     * @return le ResultSet contenant les résultats, ou null en cas d'erreur
+     */
 	public static ResultSet request(Connection conn, String sql){
 		try {return conn.prepareStatement(sql).executeQuery();
 			
@@ -23,6 +31,13 @@ public class ShopArticle {
 		
 	}
     
+	/**
+     * Exécute une requête SQL et instancie une liste d'objets Article à partir des données.
+     *
+     * @param conn la connexion active à la base de données
+     * @param sql  la requête SQL sélectionnant la description, la marque et le prix
+     * @return la liste des objets Article instanciés
+     */
     public static ArrayList<Article> requestDao(Connection conn, String sql){
 		ResultSet result = request(conn, sql);
 		if((result != null)) {
@@ -41,6 +56,12 @@ public class ShopArticle {
 
 	}
 
+	/**
+     * Exécute une requête SQL et affiche la première colonne de chaque ligne dans la console.
+     *
+     * @param conn la connexion active à la base de données
+     * @param sql  la requête SQL à exécuter
+     */
     public static void requestNoDao(Connection conn, String sql){
 		ResultSet result = request(conn, sql);
 		if((result != null)) {
