@@ -3,6 +3,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+/**
+ * Classe d'exécution contenant les scénarios de test pour la gestion des articles.
+ */
 public class TestArticle {
 
     /**
