@@ -1,0 +1,9 @@
+*.classpath
+*.class
+*.project
+Shop.sql
+/.settings
+/bin
+/lib
+*.jar
+module-info.java
