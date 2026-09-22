@@ -12,7 +12,17 @@ import java.sql.Statement;
  * Classe principale gérant les opérations sur la base de données pour les articles du magasin.
  */
 public class ShopArticle {
+	public static ResultSet request(Connection conn, String sql){
+		
+	}
+    
+    public static void requestDao(Connection conn, String sql){
 
+	}
+
+    public static void requestNoDao(Connection conn, String sql){
+
+	}
 	 /**
      * Exécute une requête SQL préparée avec trois paramètres (description, marque, prix unitaire).
      *
