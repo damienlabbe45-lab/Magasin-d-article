@@ -13,6 +13,30 @@ import java.sql.Statement;
  */
 public class ShopArticle {
 
+
+
+    /**
+     * Exécute une requête SQL préparée avec trois paramètres (description, marque, prix unitaire).
+     *
+     * @param conn        la connexion active à la base de données
+     * @param sql         la requête SQL paramétrée à exécuter
+     * @param description la description de l'article
+     * @param brand       la marque de l'article
+     * @param price       le prix unitaire de l'article
+     */
+    public static void request(Connection conn, String sql, String description, String brand, Double price) {
+        try (PreparedStatement request = conn.prepareStatement(sql)) {
+            request.setString(1, description);
+            request.setString(2, brand);
+            request.setDouble(3, price);
+            if (request.executeUpdate() == 1) {
+                System.out.println("requête effectué");
+            }
+        } catch (SQLException e) {
+            System.err.println(e);
+        }
+    }
+
     /**
      * Lit le contenu du fichier SQL de création de structure.
      *
