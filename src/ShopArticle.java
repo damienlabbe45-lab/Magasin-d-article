@@ -12,7 +12,20 @@ import java.sql.Statement;
  * Classe principale gérant les opérations sur la base de données pour les articles du magasin.
  */
 public class ShopArticle {
-	
+
+    /**
+     * Lit le contenu du fichier SQL de création de structure.
+     *
+     * @return le contenu du fichier sous forme de chaîne de caractères, ou une chaîne vide en cas d'erreur
+     */
+    private static String file() {
+        try {
+            return new String(Files.readAllBytes(Paths.get("src/Shop_modif.sql")));
+        } catch (IOException e) {
+            System.err.println(e);
+            return "";
+        }
+    }
 
     /**
      * Exécute les instructions SQL contenues dans le fichier de script.
